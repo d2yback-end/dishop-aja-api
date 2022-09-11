@@ -8,6 +8,9 @@ const envVarsSchema = Joi.object()
   .keys({
     PORT: Joi.number().default(4000),
     MONGO_URI: Joi.string().required().description('Mongo DB url'),
+    EMAIL_FROM: Joi.string().description(
+      'the from field in the emails sent by the app',
+    ),
   })
   .unknown();
 
@@ -23,5 +26,8 @@ module.exports = {
   port: envVars.PORT,
   mongoose: {
     url: envVars.MONGO_URI,
+  },
+  email: {
+    from: envVars.EMAIL_FROM,
   },
 };
