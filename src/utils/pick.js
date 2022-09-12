@@ -12,6 +12,4 @@ const pick = (object, keys) => keys.reduce((obj, key) => {
   return obj;
 }, {});
 
-console.log({ pick });
-
 module.exports = pick;
