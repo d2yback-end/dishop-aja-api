@@ -9,6 +9,14 @@ const register = {
   }),
 };
 
+const login = {
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required().custom(password),
+  }),
+};
+
 module.exports = {
   register,
+  login,
 };

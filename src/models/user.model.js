@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 /* eslint-disable func-names */
 // @ts-nocheck
 const mongoose = require('mongoose');
@@ -53,6 +54,15 @@ userSchema.pre('save', async function (next) {
   }
   next();
 });
+
+/* Compare password in db and password in request */
+userSchema.methods.isValidPassword = async function (password) {
+  try {
+    return await bcrypt.compare(password, this.password);
+  } catch (error) {
+    throw error;
+  }
+};
 
 const User = mongoose.model('User', userSchema);
 

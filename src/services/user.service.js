@@ -9,10 +9,10 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  const email = await User.findOne({ email: userBody.email });
+  const emailExist = await User.findOne({ email: userBody.email });
 
-  if (email) {
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Email is already taken!');
+  if (emailExist) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `${emailExist.email} is already taken!`);
   }
 
   const user = new User(userBody);
