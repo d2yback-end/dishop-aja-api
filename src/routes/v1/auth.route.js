@@ -1,6 +1,7 @@
 const express = require('express');
 const { authController } = require('../../controllers');
 const validate = require('../../middlewares/validate');
+const { verifyAuth } = require('../../middlewares/verifyToken');
 const { authValidation } = require('../../validations');
 
 const router = express.Router();
@@ -16,5 +17,15 @@ router.post(
   validate(authValidation.login),
   authController.login,
 );
+
+router.put(
+  '/update-token',
+  validate(authValidation.updateAccessToken),
+  authController.updateAccessToken,
+);
+
+router.get('/test', verifyAuth, (req, res) => {
+  res.send('helloTest');
+});
 
 module.exports = router;

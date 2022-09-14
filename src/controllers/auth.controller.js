@@ -35,7 +35,23 @@ const login = catchAsync(async (req, res) => {
   }
 });
 
+const updateAccessToken = catchAsync(async (req, res) => {
+  try {
+    const accessToken = await authService.updateAccessToken(req.body);
+
+    res.status(httpStatus.OK).send({
+      status: 'success',
+      data: {
+        accessToken,
+      },
+    });
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
+  }
+});
+
 module.exports = {
   register,
   login,
+  updateAccessToken,
 };

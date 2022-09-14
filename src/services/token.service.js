@@ -21,7 +21,6 @@ const signAccessToken = (id, isAdmin) => new Promise((resolve, reject) => {
     },
     (err, token) => {
       if (err) {
-        console.log(err.message);
         return reject(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Token tidak valid'));
       }
       resolve(token);
@@ -47,7 +46,6 @@ const signRefreshToken = (id, isAdmin) => new Promise((resolve, reject) => {
     },
     (err, token) => {
       if (err) {
-        console.log(err.message);
         return reject(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Token tidak valid'));
       }
       resolve(token);
@@ -63,8 +61,21 @@ const saveToken = async (token, userId) => {
   }
 };
 
+const verifyRefreshToken = async (refreshToken) => {
+  const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY, (err, user) => {
+    if (err) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Token is not valid!');
+    }
+
+    return user;
+  });
+
+  return payload;
+};
+
 module.exports = {
   signAccessToken,
   signRefreshToken,
   saveToken,
+  verifyRefreshToken,
 };
