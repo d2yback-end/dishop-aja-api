@@ -50,8 +50,22 @@ const updateAccessToken = catchAsync(async (req, res) => {
   }
 });
 
+const logout = catchAsync(async (req, res) => {
+  try {
+    await authService.logout(req.body);
+
+    res.status(httpStatus.OK).send({
+      status: 'success',
+      message: 'You have successfully logged out',
+    });
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
+  }
+});
+
 module.exports = {
   register,
   login,
   updateAccessToken,
+  logout,
 };

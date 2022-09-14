@@ -3,7 +3,13 @@ const Token = require('../models/token.model');
 const User = require('../models/user.model');
 const ApiError = require('../utils/ApiError');
 const {
-  signAccessToken, signRefreshToken, saveToken, verifyRefreshToken,
+  signAccessToken,
+  signRefreshToken,
+  saveToken,
+  verifyRefreshToken,
+  deleteToken,
+  verifyToken,
+  deleteRefreshToken,
 } = require('./token.service');
 
 /**
@@ -25,11 +31,11 @@ const login = async (userBody) => {
   const accessToken = await signAccessToken(user._id, user.isAdmin);
   const refreshToken = await signRefreshToken(user._id, user.isAdmin);
 
-  // const tokenExists = await Token.findOne({ user: user._id });
+  const tokenExists = await Token.findOne({ user: user._id });
 
-  // if(tokenExists) {
-
-  // }
+  if (tokenExists) {
+    await deleteToken(user._id);
+  }
 
   await saveToken(refreshToken, user._id);
 
@@ -37,11 +43,7 @@ const login = async (userBody) => {
 };
 
 const updateAccessToken = async (authBody) => {
-  const token = await Token.findOne({ token: authBody.refreshToken });
-
-  if (!token) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Token Not Found!');
-  }
+  await verifyToken(authBody.refreshToken);
 
   const { id, isAdmin } = await verifyRefreshToken(authBody.refreshToken);
   const accessToken = await signAccessToken(id, isAdmin);
@@ -49,7 +51,15 @@ const updateAccessToken = async (authBody) => {
   return accessToken;
 };
 
+const logout = async (authBody) => {
+  await verifyToken(authBody.refreshToken);
+
+  await verifyRefreshToken(authBody.refreshToken);
+  await deleteRefreshToken(authBody.refreshToken);
+};
+
 module.exports = {
   login,
   updateAccessToken,
+  logout,
 };

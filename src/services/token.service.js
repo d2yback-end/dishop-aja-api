@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const jwt = require('jsonwebtoken');
+const { http } = require('winston');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 
@@ -61,6 +62,14 @@ const saveToken = async (token, userId) => {
   }
 };
 
+const verifyToken = async (refreshToken) => {
+  const token = await Token.findOne({ token: refreshToken });
+
+  if (!token) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Token Not Found!');
+  }
+};
+
 const verifyRefreshToken = async (refreshToken) => {
   const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY, (err, user) => {
     if (err) {
@@ -73,9 +82,28 @@ const verifyRefreshToken = async (refreshToken) => {
   return payload;
 };
 
+const deleteToken = async (userId) => {
+  const isDelete = await Token.deleteOne({ user: userId });
+
+  if (!isDelete) {
+    throw new ApiError(http.BAD_REQUEST, 'Token failed to delete!');
+  }
+};
+
+const deleteRefreshToken = async (refreshToken) => {
+  const isDelete = await Token.deleteOne({ token: refreshToken });
+
+  if (!isDelete) {
+    throw new ApiError(http.BAD_REQUEST, 'Token failed to delete!');
+  }
+};
+
 module.exports = {
   signAccessToken,
   signRefreshToken,
   saveToken,
   verifyRefreshToken,
+  deleteToken,
+  verifyToken,
+  deleteRefreshToken,
 };

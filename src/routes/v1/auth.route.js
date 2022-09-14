@@ -24,6 +24,12 @@ router.put(
   authController.updateAccessToken,
 );
 
+router.delete(
+  '/logout',
+  validate(authValidation.logout),
+  authController.logout,
+);
+
 router.get('/test', verifyAuth, (req, res) => {
   res.send('helloTest');
 });
