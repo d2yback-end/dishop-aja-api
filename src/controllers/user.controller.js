@@ -17,6 +17,22 @@ const getUsers = catchAsync(async (req, res) => {
   }
 });
 
+const getUserById = catchAsync(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userService.getUserById(id);
+    res.status(200).send({
+      status: 'success',
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
+  }
+});
+
 module.exports = {
   getUsers,
+  getUserById,
 };

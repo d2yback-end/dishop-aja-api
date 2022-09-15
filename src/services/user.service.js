@@ -25,20 +25,40 @@ const createUser = async (userBody) => {
 
 const getUsers = async () => {
   const user = await User.find();
-  // const { password, ...others } = user._doc;
 
   return user;
 };
 
 const getUserById = async (id) => {
-  const user = User.findById(id);
+  const user = await User.findById(id);
   const { password, ...others } = user._doc;
 
   return others;
 };
 
+// const updateUser = async (id, userBody) => {
+//   const user = await getUserById(id);
+
+//   if (!user) {
+//     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+//   }
+
+//   const updatedUser = await User.findByIdAndUpdate(
+//     id,
+//     {
+//       $set: userBody,
+//     },
+//     {
+//       new: true,
+//     },
+//   );
+
+//   return updatedUser.id;
+// };
+
 module.exports = {
   createUser,
   getUsers,
   getUserById,
+  // updateUser,
 };
