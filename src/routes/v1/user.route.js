@@ -8,6 +8,7 @@ const { userValidation } = require('../../validations');
 const router = express.Router();
 
 router.get('/', verifyAdmin, userController.getUsers);
+router.get('/stats', verifyAdmin, userController.statsUser);
 
 router
   .route('/:id')
@@ -20,6 +21,11 @@ router
     verifyAuth,
     validate(userValidation.updateUser),
     userController.updateUser,
+  )
+  .delete(
+    verifyAdmin,
+    validate(userValidation.deleteUser),
+    userController.deleteUser,
   );
 
 module.exports = router;

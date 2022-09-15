@@ -56,9 +56,38 @@ const updateUser = async (id, userBody) => {
   return updatedUser.id;
 };
 
+const deleteUser = async (id) => {
+  const user = await User.findByIdAndDelete(id);
+
+  return user.id;
+};
+
+const statsUser = async () => {
+  const date = new Date();
+  const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+
+  const data = await User.aggregate([
+    { $match: { createdAt: { $gte: lastYear } } },
+    {
+      $project: {
+        month: { $month: '$createdAt' },
+      },
+    },
+    {
+      $group: {
+        _id: '$month',
+        total: { $sum: 1 },
+      },
+    },
+  ]);
+  return data;
+};
+
 module.exports = {
   createUser,
   getUsers,
   getUserById,
   updateUser,
+  deleteUser,
+  statsUser,
 };
