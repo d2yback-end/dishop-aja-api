@@ -36,29 +36,29 @@ const getUserById = async (id) => {
   return others;
 };
 
-// const updateUser = async (id, userBody) => {
-//   const user = await getUserById(id);
+const updateUser = async (id, userBody) => {
+  const user = await getUserById(id);
 
-//   if (!user) {
-//     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-//   }
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
 
-//   const updatedUser = await User.findByIdAndUpdate(
-//     id,
-//     {
-//       $set: userBody,
-//     },
-//     {
-//       new: true,
-//     },
-//   );
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    {
+      $set: userBody,
+    },
+    {
+      new: true,
+    },
+  );
 
-//   return updatedUser.id;
-// };
+  return updatedUser.id;
+};
 
 module.exports = {
   createUser,
   getUsers,
   getUserById,
-  // updateUser,
+  updateUser,
 };

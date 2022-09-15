@@ -15,6 +15,11 @@ router
     verifyAuth,
     validate(userValidation.getUserById),
     userController.getUserById,
+  )
+  .put(
+    verifyAuth,
+    validate(userValidation.updateUser),
+    userController.updateUser,
   );
 
 module.exports = router;

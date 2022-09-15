@@ -32,7 +32,24 @@ const getUserById = catchAsync(async (req, res) => {
   }
 });
 
+const updateUser = catchAsync(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = await userService.updateUser(id, req.body);
+    res.status(200).send({
+      status: 'success',
+      message: 'User updated successfully!',
+      data: {
+        userId,
+      },
+    });
+  } catch (error) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error);
+  }
+});
+
 module.exports = {
   getUsers,
   getUserById,
+  updateUser,
 };
