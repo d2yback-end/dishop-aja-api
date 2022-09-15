@@ -23,6 +23,22 @@ const createUser = async (userBody) => {
   return others;
 };
 
+const getUsers = async () => {
+  const user = await User.find();
+  // const { password, ...others } = user._doc;
+
+  return user;
+};
+
+const getUserById = async (id) => {
+  const user = User.findById(id);
+  const { password, ...others } = user._doc;
+
+  return others;
+};
+
 module.exports = {
   createUser,
+  getUsers,
+  getUserById,
 };
