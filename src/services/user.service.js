@@ -23,12 +23,21 @@ const createUser = async (userBody) => {
   return others;
 };
 
+/**
+ * Get all user
+ * @returns {Promise<User>}
+ */
 const getUsers = async () => {
   const user = await User.find();
 
   return user;
 };
 
+/**
+ * Get user by id
+ * @param {String} id
+ * @returns {Promise<User>}
+ */
 const getUserById = async (id) => {
   const user = await User.findById(id);
   const { password, ...others } = user._doc;
@@ -36,6 +45,12 @@ const getUserById = async (id) => {
   return others;
 };
 
+/**
+ * Update a user by id
+ * @param {String} id
+ * @param {Object} userBody
+ * @returns {Promise<User>}
+ */
 const updateUser = async (id, userBody) => {
   const user = await getUserById(id);
 
@@ -56,12 +71,21 @@ const updateUser = async (id, userBody) => {
   return updatedUser.id;
 };
 
+/**
+ * Delete a user by id
+ * @param {String} id
+ * @returns {Promise<User>}
+ */
 const deleteUser = async (id) => {
   const user = await User.findByIdAndDelete(id);
 
   return user.id;
 };
 
+/**
+ * Show statistics from a user
+ * @returns {Object} data
+ */
 const statsUser = async () => {
   const date = new Date();
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));

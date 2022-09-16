@@ -5,11 +5,12 @@ const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 
 /**
-     * Sign access token from JWT
-     *
-     * @param {user} Object
-     * @returns {token}
-     */
+ * Sign access token from JWT
+ *
+ * @param {String} id
+ * @param {Boolean} isAdmin
+ * @returns {token}
+ */
 const signAccessToken = (id, isAdmin) => new Promise((resolve, reject) => {
   jwt.sign(
     {
@@ -30,11 +31,12 @@ const signAccessToken = (id, isAdmin) => new Promise((resolve, reject) => {
 });
 
 /**
-     * Sign refresh token from JWT
-     *
-     * @param {user} Object
-     * @returns {token}
-     */
+ * Sign refresh token from JWT
+ *
+ * @param {String} id
+ * @param {Boolean} isAdmin
+ * @returns {token}
+ */
 const signRefreshToken = (id, isAdmin) => new Promise((resolve, reject) => {
   jwt.sign(
     {
@@ -54,6 +56,12 @@ const signRefreshToken = (id, isAdmin) => new Promise((resolve, reject) => {
   );
 });
 
+/**
+ * Save refresh token to db
+ *
+ * @param {String} token
+ * @param {String} userId
+ */
 const saveToken = async (token, userId) => {
   const tokenDoc = await Token.create({ token, user: userId });
 
@@ -62,6 +70,11 @@ const saveToken = async (token, userId) => {
   }
 };
 
+/**
+ * Verify refresh token already exists in db
+ *
+ * @param {String} refreshToken
+ */
 const verifyToken = async (refreshToken) => {
   const token = await Token.findOne({ token: refreshToken });
 
@@ -70,6 +83,11 @@ const verifyToken = async (refreshToken) => {
   }
 };
 
+/**
+ * Verify refresh token in db match with token in local environment
+ *
+ * @param {String} refreshToken
+ */
 const verifyRefreshToken = async (refreshToken) => {
   const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY, (err, user) => {
     if (err) {
@@ -82,6 +100,11 @@ const verifyRefreshToken = async (refreshToken) => {
   return payload;
 };
 
+/**
+ * Delete refresh token in db
+ *
+ * @param {String} userId
+ */
 const deleteToken = async (userId) => {
   const isDelete = await Token.deleteOne({ user: userId });
 
@@ -90,6 +113,11 @@ const deleteToken = async (userId) => {
   }
 };
 
+/**
+ * Delete refresh token in db
+ *
+ * @param {String} refreshToken
+ */
 const deleteRefreshToken = async (refreshToken) => {
   const isDelete = await Token.deleteOne({ token: refreshToken });
 

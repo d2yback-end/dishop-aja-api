@@ -42,6 +42,11 @@ const login = async (userBody) => {
   return { accessToken, refreshToken };
 };
 
+/**
+ * Update access token from refresh token
+ * @param {Object} authBody
+ * @returns {String} accessToken
+ */
 const updateAccessToken = async (authBody) => {
   await verifyToken(authBody.refreshToken);
 
@@ -51,6 +56,10 @@ const updateAccessToken = async (authBody) => {
   return accessToken;
 };
 
+/**
+ * Delete refresh token in db
+ * @param {Object} authBody
+ */
 const logout = async (authBody) => {
   await verifyToken(authBody.refreshToken);
 
