@@ -30,7 +30,7 @@ const defaultRoutes = [
     route: orderRoute,
   },
   {
-    path: '/payments',
+    path: '/checkout',
     route: paymentRoute,
   },
 ];
