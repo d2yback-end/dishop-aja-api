@@ -85,7 +85,7 @@ const deleteOrder = catchAsync(async (req, res) => {
 
 const getMonthlyIncome = catchAsync(async (req, res) => {
   try {
-    const { id } = req.query;
+    const id = req.query.pid;
     const income = await orderService.getMonthlyIncome(id);
 
     res.status(200).send({
