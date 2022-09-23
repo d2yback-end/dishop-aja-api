@@ -24,12 +24,12 @@
     "mongoose": "^6.6.0",
     "morgan": "^1.10.0",
     "stripe": "^10.10.0",
+    "winston": "^3.8.2",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.2",
-    "winston": "^3.8.2"
+    "eslint-plugin-import": "^2.25.2"
   }
 }
